@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedColor = e.target.value;
         selectedColorDisplay.textContent = selectedColor.toUpperCase();
         
-        // 尋找最接近的顏色並標記
         let closestBox = null;
         let minDifference = Infinity;
         
@@ -45,20 +44,49 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 點擊顏色方塊
+    // 複製功能
     colorBoxes.forEach(box => {
-        box.addEventListener('click', function() {
+        // 創建提示元素
+        const tooltip = document.createElement('div');
+        tooltip.className = 'copy-tooltip';
+        tooltip.textContent = '已複製！';
+        box.appendChild(tooltip);
+
+        box.addEventListener('click', async function() {
             const colorCode = this.querySelector('.color-code').textContent;
-            colorPicker.value = colorCode;
-            selectedColorDisplay.textContent = colorCode;
             
-            colorBoxes.forEach(b => b.classList.remove('selected'));
-            this.classList.add('selected');
+            try {
+                await navigator.clipboard.writeText(colorCode);
+                
+                // 顯示提示
+                tooltip.classList.add('show');
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 1000);
+                
+                // 更新選擇器
+                colorPicker.value = colorCode;
+                selectedColorDisplay.textContent = colorCode;
+                
+                // 更新選中狀態
+                colorBoxes.forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+            } catch (err) {
+                console.error('複製失敗:', err);
+            }
+        });
+
+        // 添加懸停效果
+        box.addEventListener('mouseover', function() {
+            this.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+
+        box.addEventListener('mouseout', function() {
+            this.style.transform = '';
         });
     });
 });
 
-// 輔助函數
 function rgbToHex(rgb) {
     const match = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
     if (!match) return rgb;
