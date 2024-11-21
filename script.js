@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedColorDisplay = document.getElementById('selectedColor');
     const colorBoxes = document.querySelectorAll('.color-box');
 
+    // 創建全局提示元素
+    const globalTooltip = document.createElement('div');
+    globalTooltip.className = 'global-tooltip';
+    globalTooltip.textContent = '已複製！';
+    document.body.appendChild(globalTooltip);
+
     // 搜尋功能
     colorSearch.addEventListener('input', function(e) {
         const searchTerm = e.target.value.toLowerCase();
@@ -46,26 +52,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 複製功能
     colorBoxes.forEach(box => {
-        const tooltip = document.createElement('div');
-        tooltip.className = 'copy-tooltip';
-        tooltip.textContent = '已複製！';
-        box.appendChild(tooltip);
-
         box.addEventListener('click', async function() {
             const colorCode = this.querySelector('.color-code').textContent;
             let copyText = colorCode;
             
-            // 如果包含 " / "，只複製短代碼
             if (colorCode.includes('/')) {
                 copyText = colorCode.split('/')[0].trim();
             }
             
             try {
                 await navigator.clipboard.writeText(copyText);
-                tooltip.classList.add('show');
+                
+                // 顯示全局提示
+                globalTooltip.classList.add('show');
                 setTimeout(() => {
-                    tooltip.classList.remove('show');
-                }, 1000);
+                    globalTooltip.classList.remove('show');
+                }, 1500); // 延長到 1.5 秒
                 
                 colorPicker.value = colorCode.includes('/') ? 
                     colorCode.split('/')[1].trim() : colorCode;
@@ -78,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // 添加懸停效果
+        // 保持懸停效果
         box.addEventListener('mouseover', function() {
             this.style.transform = 'translateY(-5px) scale(1.02)';
         });
