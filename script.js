@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 創建全局提示元素
     const globalTooltip = document.createElement('div');
     globalTooltip.className = 'global-tooltip';
-    globalTooltip.textContent = '已複製！';
+    globalTooltip.textContent = '複製成功';
     document.body.appendChild(globalTooltip);
 
     // 搜尋功能
@@ -63,16 +63,24 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 await navigator.clipboard.writeText(copyText);
                 
-                // 顯示全局提示
+                // 重置任何現有的動畫
+                globalTooltip.classList.remove('show');
+                void globalTooltip.offsetWidth; // 強制重繪
+                
+                // 顯示提示
                 globalTooltip.classList.add('show');
+                
+                // 設定定時器移除提示
                 setTimeout(() => {
                     globalTooltip.classList.remove('show');
-                }, 1500); // 延長到 1.5 秒
+                }, 1500);
                 
+                // 更新選擇器顯示
                 colorPicker.value = colorCode.includes('/') ? 
                     colorCode.split('/')[1].trim() : colorCode;
                 selectedColorDisplay.textContent = copyText;
                 
+                // 更新選中狀態
                 colorBoxes.forEach(b => b.classList.remove('selected'));
                 this.classList.add('selected');
             } catch (err) {

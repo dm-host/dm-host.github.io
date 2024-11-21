@@ -153,22 +153,23 @@ h1, h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(255, 255, 255, 0.2);
     color: white;
     padding: 15px 30px;
     border-radius: 10px;
-    font-size: 18px;
-    z-index: 1000;
+    font-size: 20px;
+    z-index: 9999;
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-width: 200px;
 }
 
 .global-tooltip.show {
     opacity: 1;
-    visibility: visible;
 }
 
 @media (max-width: 768px) {
