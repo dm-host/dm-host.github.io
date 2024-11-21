@@ -1,0 +1,56 @@
+/* 基本樣式設置 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    color: #333;
+    margin: 20px 0;
+}
+
+/* 顏色區塊網格 */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* 每個顏色框樣式 */
+.color-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 顏色預覽框 */
+.color-preview {
+    width: 100%;
+    height: 100px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+/* 顏色名稱 */
+.color-name {
+    font-size: 14px;
+    color: #333;
+}
+
+/* 顏色代碼 */
+.color-code {
+    font-size: 12px;
+    color: #666;
+}
