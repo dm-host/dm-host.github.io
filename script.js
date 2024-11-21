@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 複製功能
     colorBoxes.forEach(box => {
-        // 創建提示元素
         const tooltip = document.createElement('div');
         tooltip.className = 'copy-tooltip';
         tooltip.textContent = '已複製！';
@@ -54,21 +53,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         box.addEventListener('click', async function() {
             const colorCode = this.querySelector('.color-code').textContent;
+            let copyText = colorCode;
+            
+            // 如果包含 " / "，只複製短代碼
+            if (colorCode.includes('/')) {
+                copyText = colorCode.split('/')[0].trim();
+            }
             
             try {
-                await navigator.clipboard.writeText(colorCode);
-                
-                // 顯示提示
+                await navigator.clipboard.writeText(copyText);
                 tooltip.classList.add('show');
                 setTimeout(() => {
                     tooltip.classList.remove('show');
                 }, 1000);
                 
-                // 更新選擇器
-                colorPicker.value = colorCode;
-                selectedColorDisplay.textContent = colorCode;
+                colorPicker.value = colorCode.includes('/') ? 
+                    colorCode.split('/')[1].trim() : colorCode;
+                selectedColorDisplay.textContent = copyText;
                 
-                // 更新選中狀態
                 colorBoxes.forEach(b => b.classList.remove('selected'));
                 this.classList.add('selected');
             } catch (err) {
